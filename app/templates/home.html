@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h3>Criações</h3>
+    <ul>
+        <a href="{{url_for('new_client')}}"><li>Criar Cliente</li></a>
+        <a href="{{url_for('new_employee')}}"><li>Criar Funcionário</li></a>
+        <a href="{{url_for('new_category')}}"><li>Criar Categoria</li></a>
+        <a href="{{url_for('new_product')}}"><li>Criar Produto</li></a>
+    </ul>
+
+    <h3>Listagem</h3>
+    <ul>
+        <a href="{{url_for('list', object='client')}}"><li>Listar Clientes</li></a>
+        <a href="{{url_for('list', object='employee')}}"><li>Listar Funcionários</li></a>
+        <a href="{{url_for('list', object='category')}}"><li>Listar Categorias</li></a>
+        <a href="{{url_for('list', object='product')}}"><li>Listar Produtos</li></a>
+    </ul>
+</body>
+</html>
