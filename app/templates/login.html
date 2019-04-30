@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="" method="POST">>
+        {{ form.csrf_token}}
+        <label for="">Usuário</label>
+        {{ form.username(placeholder="Digite seu usuário") }}
+        <label for="">Senha</label>
+        {{ form.password(placeholder="Digite sua senha") }}
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="" method="POST">>
+        {{ form.csrf_token}}
+        <label for="">Nome</label>
+        {{ form.name(placeholder="Digite o nome do produto", value=category.name) }}
+        <label for="">Categoria</label>
+        {% set f = form.description.process_data(category.description) %}
+        {{ form.description(placeholder="Descreva a categoria", id='description') }}
+        <label for="">Senha</label>
+        <input type="password" name="password" placeholder="Digite sua Senha">
+        <label for="">Repita sua Senha</label>
+        <input type="password" name="repeat" placeholder="Repita sua Senha">
+        <input type="submit" value="Enviar">
+    </form>
+
+</body>
+</html>

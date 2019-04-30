@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="" method="POST">>
+        {{ form.csrf_token}}
+        <label for="">Nome</label>
+        {{ form.name(placeholder="Digite o nome do produto", value=product.name) }}
+        <label for="">Preço</label>
+        {{ form.price(value=product.price) }}
+        <label for="">Descrição</label>
+        {% set f = form.description.process_data(product.description) %}
+        {{ form.description(placeholder="Descreva o produto") }}
+        <label for="">Categoria</label>
+        {{ form.category(id='query_field') }}
+
+        <label for="">Senha</label>
+        <input type="password" name="password" placeholder="Digite sua Senha">
+        <label for="">Repita sua Senha</label>
+        <input type="password" name="repeat" placeholder="Repita sua Senha">
+        <input type="submit" value="Enviar">
+    </form>
+
+    <script type="text/javascript">
+        document.getElementById("query_field").value = "{{product.category.id}}";
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Categoria</title>
+</head>
+<body>
+
+<form action="" method="POST">>
+        {{ form.csrf_token}}
+        <label for="">Nome</label>
+        {{ form.name(placeholder="Digite o nome da categoria") }}
+        <label for="">Descrição</label>
+        {{ form.description(placeholder="Descreva a categoria") }}
+        <input type="submit" value="Enviar">
+    </form>
+
+</body>
+</html>

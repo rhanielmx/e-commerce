@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Produto</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {{ form.csrf_token}}
+        <label for="">Nome</label>
+        {{ form.name(placeholder="Digite seu Nome") }}
+        <label for="">Preço</label>
+        {{ form.price }}
+        <label for="">Descrição</label>
+        {{ form.description(placeholder="Descreva a categoria") }}
+        <label for="">Categoria</label>
+        {{ form.category }}
+        <input type="submit">
+    </form>
+
+</body>
+</html>

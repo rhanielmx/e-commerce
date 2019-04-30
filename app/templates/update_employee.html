@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="" method="POST">>
+        {{ form.csrf_token}}
+        <label for="">Nome</label>
+        {{ form.name(value=user.name) }}
+        <label for="">Salario</label>
+        {{ form.salary(value=user.salary) }}
+        <label for="">Usuário</label>
+        {{ form.username(value=user.username, readonly=True) }}
+        <label for="">Senha</label>
+        {{ form.password(placeholder="Digite sua senha") }}
+        <label for="">Repita sua Senha</label>
+        <input type="password" name="repeat" placeholder="Repita sua Senha">
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>
