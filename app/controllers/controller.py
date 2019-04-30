@@ -3,12 +3,27 @@ from app.models.forms import ClientForm, EmployeeForm, ProductForm, CategoryForm
 from app.models.tables import User, Client, Employee, Category, Product
 
 from flask import render_template, redirect, url_for, request, abort, session
-from flask_login import login_user, logout_user, current_user, user_logged_in, user_logged_out
+from flask_login import login_user, logout_user, current_user, user_logged_in, user_logged_out, login_fresh
 
+from functools import wraps
 
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter_by(id=id).first()
+
+
+def login_required(role="ANY"):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+            print(current_user.is_authenticated)
+            if not current_user.is_authenticated:
+              return login_manager.unauthorized()
+            if ((current_user.type != role) and (role != "ANY")):
+                return login_manager.unauthorized()
+            return fn(*args, **kwargs)
+        return decorated_view
+    return wrapper
 
 
 @app.route('/index')
@@ -17,11 +32,18 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/home')
+@login_required()
+def home():
+    return render_template('home.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
     if current_user.is_anonymous:
         form = LoginForm()
+        next = request.args.get('next')
 
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
@@ -30,7 +52,7 @@ def login():
             else:
                 abort(400)
 
-            return redirect(url_for('index'))
+            return redirect(next or url_for('home'))
 
         return render_template('login.html', form=form)
 
@@ -46,7 +68,6 @@ def logout():
 
 @app.route('/new/client', methods=['GET', 'POST'])
 def new_client():
-
     form = ClientForm()
 
     name = form.name.data
@@ -156,6 +177,7 @@ def delete_employee(id):
 
 
 @app.route('/new/category', methods=['GET', 'POST'])
+@login_required(role='employee')
 def new_category():
     form = CategoryForm()
 
@@ -172,6 +194,7 @@ def new_category():
 
 
 @app.route('/update/category/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def update_category(id):
     category = Category.query.filter_by(id=id).first()
 
@@ -193,6 +216,7 @@ def update_category(id):
 
 
 @app.route('/delete/category/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def delete_category(id):
     category = Category.query.filter_by(id=id).first()
 
@@ -203,6 +227,7 @@ def delete_category(id):
 
 
 @app.route('/new/product', methods=['GET', 'POST'])
+@login_required(role='employee')
 def new_product():
     form = ProductForm()
 
@@ -220,7 +245,9 @@ def new_product():
 
     return render_template('new_product.html', form=form)
 
+
 @app.route('/update/product/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def update_product(id):
     product = Product.query.filter_by(id=id).first()
 
@@ -247,6 +274,7 @@ def update_product(id):
 
 
 @app.route('/delete/product/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def delete_product(id):
     product = Product.query.filter_by(id=id).first()
 
@@ -269,7 +297,9 @@ def list(object):
 
     return render_template('list.html', object_name=object, objects=objects)
 
+
 @app.route('/update/<object>/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def update(object, id):
     if object == 'client':
         return redirect(url_for('update_client', id=id))
