@@ -23,6 +23,7 @@ login_manager.refresh_view = 'login'
 login_manager.needs_refresh_message = (u"Session timedout, please re-login")
 login_manager.needs_refresh_message_category = "info"
 
+
 @app.before_request
 def before_request():
     session.permanent = True
