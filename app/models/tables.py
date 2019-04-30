@@ -119,7 +119,7 @@ class Product(db.Model):
     name = db.Column(db.String())
     description = db.Column(db.String())
     price = db.Column(db.Float(precision=2))
-    category_id = db.Column(db.String(), db.ForeignKey('categories.id', ondelete='CASCADE'))
+    category_id = db.Column(db.String(), db.ForeignKey('categories.id', ondelete='NO ACTION', onupdate='CASCADE'))
 
     category = db.relationship('Category', foreign_keys=category_id)
 
