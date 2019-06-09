@@ -131,3 +131,20 @@ class Product(db.Model):
 
     def __repr__(self):
         return "<Product %r>" % self.name
+
+class Bag(db.Model):
+    __tablename__ = 'bags'
+
+    id = db.Column(db.Integer(), primary_key = True)
+    isPurchased = db.Column(db.Boolean(), unique = False, nullable = False)
+    price = db.Column(db.Float(precision = 2))
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete = 'NO ACTION', onupdate='NO ACTION'))
+
+    user = db.relationship('User', foreign_keys = user_id)
+
+    def __init__(self, isPurchased, price, user_id):
+        self.isPurchased = isPurchased
+        self.price = price,
+        self.user_id = user_id
+
+ 
