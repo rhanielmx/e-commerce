@@ -11,8 +11,11 @@ relationships = UserRole.query.all()
 
 #db.create_all()
 
-users = Client.query.all()
-print(users)
+query = 'Livro'
+category = Category.query.filter(Category.name.like(f'%{query}%')).first()
+categories = Category.query.all()
+print([category.name for category in categories])
+print(category)
 #users = User.query.all()
 #employee = Employee.query.filter_by(name='Apagar').first()
 #print(employee)
