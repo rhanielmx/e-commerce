@@ -29,6 +29,8 @@ def login_required(role="ANY"):
 @app.route('/index')
 @app.route('/')
 def index():
+    if current_user.is_authenticated and current_user.type == 'employee':
+        return render_template('employee_index.html')
     return render_template('index.html')
 
 
@@ -52,7 +54,7 @@ def login():
             else:
                 abort(400)
 
-            return redirect(next or url_for('home'))
+            return redirect(next or url_for('index'))
 
         return render_template('login.html', form=form)
 
@@ -64,6 +66,15 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route("/profile/<int:id>")
+def profile(id):
+    user = User.query.filter_by(id=id).first()
+    if user.type == 'client':
+        return redirect(url_for('update_client', id=id))
+    if user.type == 'employee':
+        return redirect(url_for('update_employee', id=id))
 
 
 @app.route('/new/client', methods=['GET', 'POST'])
@@ -111,7 +122,7 @@ def update_client(id):
     return render_template('update_client.html', form=form, user=client)
 
 @app.route('/delete/client/<int:id>', methods=['GET', 'POST'])
-def delete_user(id):
+def delete_client(id):
     client = Client.query.filter_by(id=id).first()
 
     db.session.delete(client)
@@ -144,6 +155,7 @@ def new_employee():
 
 
 @app.route('/update/employee/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def update_employee(id):
     employee = Employee.query.filter_by(id=id).first()
 
