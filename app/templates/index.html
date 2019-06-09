@@ -39,9 +39,14 @@
     <div class="inner">
       <h3 class="masthead-brand">Cover</h3>
       <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link active" href="{{url_for('home')}}">Home</a>
+        <a class="nav-link active" href="{{url_for('index')}}">Home</a>
         <a class="nav-link" href="{{url_for('login')}}">Entrar</a>
         <a class="nav-link" href="{{url_for('new_client')}}">Registrar-se</a>
+
+        <form class="form-inline mt-2 mt-md-0" action="{{url_for('search')}}">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </nav>
     </div>
   </header>
@@ -53,6 +58,10 @@
       <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
     </p>
   </main>
+
+  <div class="categories-list">
+    <span> <a class="nav-link" href="search/?query=Livros">Livros</a> |  <a class="nav-link" href="search/?query=Eletrônicos">Eletrônicos</a>  |  <a class="nav-link" href="search/?query=Filmes">Filmes</a>  </span>
+  </div>
 
   <footer class="mastfoot mt-auto">
     <div class="inner">
