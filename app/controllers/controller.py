@@ -32,10 +32,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/home')
+@app.route('/menu')
 @login_required()
-def home():
-    return render_template('home.html')
+def menu():
+    return render_template('lists.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -310,6 +310,7 @@ def update(object, id):
     elif object == 'category':
         return redirect(url_for('update_category', id=id))
 
+
 @app.route('/delete/<object>/<int:id>', methods=['GET', 'POST'])
 def delete(object, id):
     if object == 'client':
@@ -320,3 +321,27 @@ def delete(object, id):
         return redirect(url_for('delete_product', id=id))
     elif object == 'category':
         return redirect(url_for('delete_category', id=id))
+
+
+@app.route('/search/', methods=['GET', 'POST'])
+def search():
+    query=request.args.get('query')
+    results = []
+    category = Category.query.filter(Category.name.like(f'%{query}%')).first()
+    products_like = Product.query.filter(Product.name.like(f'%{query}%')).all()
+    products_contains = Product.query.filter(Product.name.contains(query)).all()
+
+    if category:
+        products = Product.query.filter_by(category_id=category.id).all()
+        for product in products:
+            results.append(product)
+
+    if products_like:
+        for product in products_like:
+            if product not in results: results.append(product)
+
+    if products_contains:
+        for product in products_contains:
+            if product not in results: results.append(product)
+
+    return render_template('search.html', products=results)
