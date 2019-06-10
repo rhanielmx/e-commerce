@@ -357,3 +357,7 @@ def search():
             if product not in results: results.append(product)
 
     return render_template('search.html', products=results)
+
+@app.route('/carrinho', methods=['GET', 'POST'])
+def carrinho_compras():
+    return render_template('carrinho.html')
