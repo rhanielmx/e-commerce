@@ -138,7 +138,7 @@ class Bag(db.Model):
     id = db.Column(db.Integer(), primary_key = True)
     isPurchased = db.Column(db.Boolean(), unique = False, nullable = False)
     price = db.Column(db.Float(precision = 2))
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete = 'NO ACTION', onupdate='NO ACTION'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete = 'NO ACTION', onupdate='NO ACTION'))
 
     user = db.relationship('User', foreign_keys = user_id)
 

@@ -5,14 +5,26 @@
     <title>Title</title>
 </head>
 <body>
+    <h1>Resultado de sua busca</h1>
     {% if products %}
-        <ul>
-            {% for product in products %}
-                <li>
-                    <span>{{product.name}}</span>
-                </li>
-            {% endfor %}
-        </ul>
+        <table border = "1"'>
+            <tr>
+                <td>Nome do Produto </td>
+                <td> Categoria do Produto </td>
+                <td> Preço do Produto </td>
+                <td> Adicionar ao Carrinho</td>
+            </tr>
+                {% for product in products %}
+                    <tr>
+                            <td align = 'Center' >{{product.name}}</td>
+                            <td align = 'Center' >{{product.category_id}}</td>
+                            <td align = 'Center' >{{product.price}}</td> 
+                            <td align = 'Center' ><button>  + </button> <button> - </button></td>
+                    </tr>
+                        
+                         
+                {% endfor %}            
+        </table>
 
     {% endif %}
 
