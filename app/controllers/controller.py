@@ -368,8 +368,10 @@ def add_to_cart():
     resp = request.cookies.get('shopping-cart')
 
     total_price = 0
-    for item in json.loads(resp):
-        total_price += float(item['price']) * int(item['quantity'])
+
+    if resp is not None:
+        for item in json.loads(resp):
+            total_price += float(item['price']) * int(item['quantity'])
 
     if request.method=='POST':
         product = request.form['product']
@@ -428,28 +430,17 @@ def get_cookies():
     print(resp)
     return resp or 'oi'
 
-
-
-def a():
-    resp = request.cookies.keys()
-    array_of_cookies = []
-    array_of_cookies_unfiltered = []
-    result = []
-    full_price = 0
-    for i in resp:
-        if i != 'session':
-            array_of_cookies_unfiltered.append(i)
-            i = i.replace('%20', ' ')
-            array_of_cookies.append(i)
-    print(resp)
-    print(array_of_cookies)
-    print(array_of_cookies_unfiltered)
-    """
-    for i in array_of_cookies:
-        products_like = Product.query.filter(Product.name.like(f'%{i}%')).all()
-        for item in products_like:
-            result.append(item)
-    for k in array_of_cookies_unfiltered:
-        full_price = full_price + float(request.cookies.get(k))
-    """
-    return render_template('carrinho.html')#, products = zip(result,array_of_cookies_unfiltered), full_price = full_price)
+@app.route('/finalizar compra', methods = ['GET', 'POST'])
+def finalizar_compra():
+    resp = request.cookies.get('shopping-cart')
+    iterador = json.loads(resp)
+    produtos = []
+    price = []
+    quantity = []
+    for item in iterador:
+        produtos.append(item['product'])
+        price.append(item['price'])
+        quantity.append(item['quantity'])
+    print(produtos, price, quantity)
+    
+    return('oi')

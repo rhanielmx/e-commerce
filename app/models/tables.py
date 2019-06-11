@@ -136,15 +136,15 @@ class Bag(db.Model):
     __tablename__ = 'bags'
 
     id = db.Column(db.Integer(), primary_key = True)
-    isPurchased = db.Column(db.Boolean(), unique = False, nullable = False)
     price = db.Column(db.Float(precision = 2))
+    products = db.Column(db.String(500))
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete = 'NO ACTION', onupdate='NO ACTION'))
 
     user = db.relationship('User', foreign_keys = user_id)
 
-    def __init__(self, isPurchased, price, user_id):
-        self.isPurchased = isPurchased
+    def __init__(self, price, user_id, products):
         self.price = price,
-        self.user_id = user_id
+        self.user_id = user_id,
+        self.products = products
 
  
