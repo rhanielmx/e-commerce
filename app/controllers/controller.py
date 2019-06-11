@@ -469,4 +469,21 @@ def finalizar_compra():
             """.format(price, produtos, user_id)
     db.session.execute(query)
     db.session.commit()
-    return render_template('finalizar_compra.html')
+
+    resp = make_response(render_template('finalizar_compra.html'))
+    resp.set_cookie('shopping-cart','', expires = 0)
+    return resp
+
+@app.route('/listar_compras', methods = ['GET','POST'])
+def render_compras():
+    user_id = current_user.id
+    query = """ Select price, products from bags
+                where user_id = {0}
+            """.format(user_id)
+    compras = db.session.execute(query)
+    items = []
+    for item in compras:
+        items.append(item)
+    return render_template('suas_compras.html', items = items)
+    
+    
