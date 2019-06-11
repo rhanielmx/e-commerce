@@ -1,0 +1,10 @@
+Thiago Beppe e Rhaniel Xavier
+
+mkdir e-commerce
+git clone
+python venv webapp
+source webapp/bin/activate
+cd e-commerce
+pip install -r requirements.txt
+python db_create.py
+python run.py runserver
