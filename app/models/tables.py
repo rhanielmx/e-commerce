@@ -142,9 +142,10 @@ class Bag(db.Model):
 
     user = db.relationship('User', foreign_keys = user_id)
 
-    def __init__(self, price, user_id, products):
+    def __init__(self, price, products, user_id, ):
         self.price = price,
-        self.user_id = user_id,
-        self.products = products
+        self.products = products,
+        self.user_id = user_id
+        
 
  

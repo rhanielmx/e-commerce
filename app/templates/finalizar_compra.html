@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>finalizando</title>
+</head>
+<body>
+        <div id='header'>
+                <a class="nav-link active" href="{{url_for('index')}}">Inicial</a>
+                {% if  current_user.is_authenticated  %}
+                  <a class="nav-link" href="{{url_for('profile', id=current_user.id)}}">Perfil</a>
+                  <a class="nav-link" href="{{url_for('add_to_cart')}}"> Carrinho</a>
+                  <a class="nav-link" href="{{url_for('logout')}}">Sair</a>
+                {% endif %}
+        </div>
+        <div>
+            <h1> Obrigado por comprar conosco</h1>
+        </div>
+</body>
+</html>

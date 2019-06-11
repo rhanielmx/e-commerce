@@ -1,6 +1,6 @@
 from app import app, db, login_manager
 from app.models.forms import ClientForm, EmployeeForm, ProductForm, CategoryForm, LoginForm
-from app.models.tables import User, Client, Employee, Category, Product
+from app.models.tables import *
 
 from flask import render_template, redirect, url_for, request, abort, session, make_response
 from flask_login import login_user, logout_user, current_user, user_logged_in, user_logged_out, login_fresh
@@ -456,15 +456,17 @@ def get_cookies():
 
 @app.route('/finalizar compra', methods = ['GET', 'POST'])
 def finalizar_compra():
+    user_id = current_user.id
     resp = request.cookies.get('shopping-cart')
     iterador = json.loads(resp)
-    produtos = []
-    price = []
-    quantity = []
+    produtos = ''
+    price = 0.0
     for item in iterador:
-        produtos.append(item['product'])
-        price.append(item['price'])
-        quantity.append(item['quantity'])
-    print(produtos, price, quantity)
-    
-    return('oi')
+        produtos = produtos + str(item['product']) + ' - (' + str(item['quantity']) + ' Unidade(s))  '
+        price = price + float(item['price'])
+    query = """INSERT INTO bags (price, products,user_id)
+                VALUES({0},'{1}',{2})
+            """.format(price, produtos, user_id)
+    db.session.execute(query)
+    db.session.commit()
+    return render_template('finalizar_compra.html')
