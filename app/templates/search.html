@@ -9,17 +9,17 @@
     {% if products %}
         <table border = "1"'>
             <tr>
-                <td>Nome do Produto </td>
+                <td> Nome do Produto </td>
                 <td> Categoria do Produto </td>
                 <td> Preço do Produto </td>
-                <td> Adicionar ao Carrinho</td>
+                <td></td>
             </tr>
                 {% for product in products %}
                     <tr>
-                            <td align = 'Center' >{{product.name}}</td>
-                            <td align = 'Center' >{{product.category_id}}</td>
-                            <td align = 'Center' >{{product.price}}</td> 
-                            <td align = 'Center' ><button>  + </button> <button> - </button></td>
+                            <td id = "product-{{product.id}}" , align = 'Center' >{{product.name}}</td>
+                            <td id = "category-{{product.id}}", align = 'Center' >{{product.category}}</td>
+                            <td id = "price-{{product.id}}" , align = 'Center' >{{product.price}}</td> 
+                            <td align = 'Center' ><button onClick="onClickCar('product-{{product.id}}', 'price-{{product.id}}')"> Por no Carrinho </button></td>
                     </tr>
                         
                          
@@ -28,5 +28,9 @@
     {% else %}
         <p> Não existe produtos com esse nome</p>
     {% endif %}
+    <a class="nav-link" href="{{url_for('carrinho_compras')}}"> Ir para o carrinho</a>
 </body>
+ 
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src = './../static/js/script.js'></script>
 </html>
