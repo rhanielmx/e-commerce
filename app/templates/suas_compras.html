@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>finalizando</title>
+</head>
+<body>
+        <div id='header'>
+                <a class="nav-link active" href="{{url_for('index')}}">Inicial</a>
+                {% if  current_user.is_authenticated  %}
+                  <a class="nav-link" href="{{url_for('profile', id=current_user.id)}}">Perfil</a>
+                  <a class="nav-link" href="{{url_for('add_to_cart')}}"> Carrinho</a>
+                  <a class="nav-link" href="{{url_for('logout')}}">Sair</a>
+                {% endif %}
+        </div>
+        <div>
+            {% if items %}
+            <table border = "2" >
+                    <tr>
+                        <td> Sacola </td>
+                        <td> Preço Total </td>
+
+                    </tr>
+                    {% for item in items %}
+                    <tr >
+                                    <td align = 'Center' >{{item[1]}}</td>
+                                    <td align = 'Center' >{{item[0]}}</td>
+                    </tr>
+                    {% endfor %}
+            </table>
+            {% else %}
+            <div>
+                <h1> Você não possue compras</h1>
+            </div>
+            {% endif %}
+        </div>
+</body>
+</html>
