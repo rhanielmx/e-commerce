@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'navbar.html' %}
 
-    <form action="" method="POST">>
+{% block content %}
+
+<form action="" method="POST" class="form-signin">
         {{ form.csrf_token}}
-        <label for="">Nome</label>
-        {{ form.name(value=user.name) }}
-        <label for="">E-mail</label>
-        {{ form.email(value=user.email) }}
-        <label for="">Usuário</label>
-        {{ form.username(value=user.username, readonly=True) }}
-        <label for="">Senha</label>
-        {{ form.password(placeholder="Digite sua senha") }}
-        <label for="">Repita sua Senha</label>
-        <input type="password" name="repeat" placeholder="Repita sua Senha">
-        <input type="submit" value="Enviar">
+        <label for="" class="sr-only">Nome</label>
+        {{ form.name(value=user.name, class="form-control") }}
+        <label for="" class="sr-only">E-mail</label>
+        {{ form.email(value=user.email, class="form-control") }}
+        <label for="" class="sr-only">Usuário</label>
+        {{ form.username(value=user.username, readonly=True, class="form-control") }}
+        <label for="" class="sr-only">Senha</label>
+        {{ form.password(placeholder="Digite sua senha", class="form-control") }}
+        <label for="" class="sr-only">Repita sua Senha</label>
+        <input type="password" name="repeat" placeholder="Repita sua Senha" class="form-control">
+        <input type="submit" id="update" value="Enviar" class="btn btn-primary form-control">
     </form>
 
-    <span><a href="{{url_for('delete_client', id=current_user.id)}}">autodestruição</a></span>
-</body>
-</html>
+    <span class="btn btn-danger"><a href="{{url_for('delete', object='client', id=user.id)}}">Deletar</a></span>
+
+{% endblock %}

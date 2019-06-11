@@ -1,26 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link href="{{url_for('static', filename='css/bootstrap-4.3.1.min.css')}}" rel="stylesheet">
+    <script src="{{url_for('static', filename='js/bootstrap-4.3.1.min.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='css/cover.css')}}" rel="stylesheet">
 </head>
-<body>
 
-    <form action="" method="POST">>
-        {{ form.csrf_token}}
-        <label for="">Nome</label>
-        {{ form.name(value=current_user.name) }}
-        <label for="">Salario</label>
-        {{ form.salary(value=current_user.salary) }}
-        <label for="">Usuário</label>
-        {{ form.username(value=current_user.username, readonly=True) }}
-        <label for="">Senha</label>
-        {{ form.password(placeholder="Digite sua senha") }}
-        <label for="">Repita sua Senha</label>
-        <input type="password" name="repeat" placeholder="Repita sua Senha">
-        <input type="submit" value="Enviar">
-    </form>
+<body class="text-center">
 
-    <span><a href="{{url_for('delete_employee', id=current_user.id)}}">autodestruição</a></span>
-</body>
+    <div class="cover-container d-flex w-1000 h-1000 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">Cover</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="{{url_for('index')}}">Home</a>
+            <a class="nav-link" href="{{url_for('profile', id=current_user.id)}}">Profile</a>
+            <a class="nav-link" href="{{url_for('new_client')}}">Cadastrar Cliente</a>
+            <a class="nav-link" href="{{url_for('new_employee')}}">Cadastrar Empregado</a>
+            <a class="nav-link" href="{{url_for('new_category')}}">Cadastrar Categoria</a>
+            <a class="nav-link" href="{{url_for('new_product')}}">Cadastrar Produto</a>
+            <a class="nav-link" href="{{url_for('logout')}}">Sair</a>
+          </nav>
+        </div>
+      </header>
+
+    <div class="profile">
+        <form action="" method="POST" class="form-signin">
+            {{ form.csrf_token}}
+            <label for="" class="sr-only">Nome</label>
+            {{ form.name(value=current_user.name, class="form-control") }}
+            <label for="" class="sr-only">Salario</label>
+            {{ form.salary(value=current_user.salary, class="form-control") }}
+            <label for="" class="sr-only">Usuário</label>
+            {{ form.username(value=current_user.username, readonly=True, class="form-control") }}
+            <label for="" class="sr-only">Senha</label>
+            {{ form.password(placeholder="Digite sua senha", class="form-control") }}
+            <label for="" class="sr-only">Repita sua Senha</label>
+            <input type="password" name="repeat" placeholder="Repita sua Senha" class="form-control">
+            <input id="user_id" type="hidden" value="a">
+            <input type="submit" id="update" value="Enviar" class="btn btn-primary">
+
+        </form>
+        <span class="btn btn-danger"><a href="{{url_for('delete', object='employee', id=current_user.id)}}">Deletar</a></span>
+    </div>
+
+
+    </body>
 </html>

@@ -1,19 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Nova Categoria</title>
-</head>
-<body>
+{% extends 'navbar_employee.html' %}
 
-<form action="" method="POST">>
-        {{ form.csrf_token}}
-        <label for="">Nome</label>
-        {{ form.name(placeholder="Digite o nome da categoria") }}
-        <label for="">Descrição</label>
-        {{ form.description(placeholder="Descreva a categoria") }}
-        <input type="submit" value="Enviar">
-    </form>
 
-</body>
-</html>
+{% block title %}
+    Nova Categoria
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form action="" method="POST" class="form-signin">
+                {{ form.csrf_token}}
+                <label for="" class="sr-only">Nome</label>
+                {{ form.name(placeholder="Digite o nome da categoria", class="form-control") }}
+                <label for="" class="sr-only">Descrição</label>
+                {{ form.description(placeholder="Descreva a categoria", class="form-control") }}
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Enviar">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

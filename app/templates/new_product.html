@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Novo Produto</title>
-</head>
-<body>
-    <form action="" method="POST">
+{% extends 'navbar_employee.html' %}
+
+{% block title %}Novo Produto{% endblock %}
+
+{% block content %}
+    <form action="" method="POST" class="form-signin">
         {{ form.csrf_token}}
-        <label for="">Nome</label>
-        {{ form.name(placeholder="Digite seu Nome") }}
-        <label for="">Preço</label>
-        {{ form.price }}
-        <label for="">Descrição</label>
-        {{ form.description(placeholder="Descreva a categoria") }}
-        <label for="">Categoria</label>
-        {{ form.category }}
+        <label for="" class="sr-only">Nome</label>
+        {{ form.name(placeholder="Digite seu Nome", class="form-control") }}
+        <label for="" class="sr-only">Preço</label>
+        {{ form.price(placeholder="Digite o preço do produto", type="number", class="form-control" )}}
+        <label for="" class="sr-only"> Descrição</label>
+        {{ form.description(placeholder="Descreva a categoria", class="form-control") }}
+        <label for="" class="sr-only">Categoria</label>
+        {{ form.category(class="form-control") }}
         <input type="submit">
     </form>
 
-</body>
-</html>
+{% endblock %}

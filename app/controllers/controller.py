@@ -31,8 +31,6 @@ def login_required(role="ANY"):
 @app.route('/index')
 @app.route('/')
 def index():
-    if current_user.is_authenticated and current_user.type == 'employee':
-        return render_template('employee_index.html')
     return render_template('index.html')
 
 
@@ -182,12 +180,16 @@ def update_employee(id):
 
 @app.route('/delete/employee/<int:id>', methods=['GET', 'POST'])
 def delete_employee(id):
-    employee = Employee.query.filter_by(id=id).first()
 
-    db.session.delete(employee)
-    db.session.commit()
+    if request.method=='POST':
+        id = request.form['user_id']
+        employee = Employee.query.filter_by(id=id).first()
+        print(employee)
 
-    return redirect(url_for('list', object='employee'))
+        db.session.delete(employee)
+        db.session.commit()
+
+    return redirect(url_for('index'))
 
 
 @app.route('/new/category', methods=['GET', 'POST'])
@@ -326,6 +328,7 @@ def update(object, id):
 
 
 @app.route('/delete/<object>/<int:id>', methods=['GET', 'POST'])
+@login_required(role='employee')
 def delete(object, id):
     if object == 'client':
         return redirect(url_for('delete_client', id=id))
@@ -451,7 +454,6 @@ def remove_from_cart():
 @app.route('/get_cookies', methods=['GET', 'POST'])
 def get_cookies():
     resp = request.cookies.get('shopping-cart')
-    print(resp)
     return resp or 'oi'
 
 @app.route('/finalizar compra', methods = ['GET', 'POST'])

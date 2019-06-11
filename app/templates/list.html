@@ -1,24 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Listagem</title>
-</head>
-<body>
+{% if current_user.type == 'employee' %}
+  {% extends 'navbar_employee.html' %}
+{% else %}
+  {% extends 'navbar.html' %}
+{% endif %}
 
-    {% if objects %}
+{% block title %}
+Listagem
+{% endblock %}
+
+{% block content %}
+{% if objects %}
         <ul>
         {% for object in objects %}
-            <li>{{object.name}}</li>
-            <a href="{{url_for('update', object=object_name, id=object.id)}}">Alterar</a>
+            <h4><li>{{object.name}}</li></h4>
+            <a href="{{url_for('update', object=object_name, id=object.id)}} style">Alterar</a>
             <a href="{{url_for('delete', object=object_name, id=object.id)}}">Deletar</a>
         {% endfor %}
         </ul>
     {% else %}
         <h3>Ainda não há nada a ser exibido aqui!</h3>
     {% endif %}
-    <a href="/new/{{object_name}}"><button>Nova</button></a>
-
-
-</body>
-</html>
+{% endblock %}

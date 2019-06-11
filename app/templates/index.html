@@ -1,67 +1,18 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>Cover Template · Bootstrap</title>
+{% if current_user.type == 'employee' %}
+  {% extends 'navbar_employee.html' %}
+{% else %}
+  {% extends 'navbar.html' %}
+{% endif %}
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/cover/">
+{% block title %}
+Home - {{ current_user.type | capitalize }}
+{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-<link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="{{url_for('static', filename='css/cover.css')}}" rel="stylesheet">
-  </head>
-  <body class="text-center">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <header class="masthead mb-auto">
-    <div class="inner">
-      <h3 class="masthead-brand">SaraiVrau</h3>
-      <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link active" href="{{url_for('index')}}">Inicial</a>
-        {% if  current_user.is_authenticated  %}
-          <a class="nav-link" href="{{url_for('profile', id=current_user.id)}}">Perfil</a>
-          <a class="nav-link" href="{{url_for('add_to_cart')}}"> Carrinho</a>
-          <a class="nav-link" href ="{{url_for('render_compras')}}"> Suas Compras </a>
-          <a class="nav-link" href="{{url_for('logout')}}">Sair</a>
-        {% else %}
-          <a class="nav-link" href="{{url_for('login')}}">Entrar</a>
-          <a class="nav-link" href="{{url_for('new_client')}}">Registrar-se</a>
-          <a class="nav-link" href="{{url_for('add_to_cart')}}"> Carrinho</a>
-        {% endif %}
-
-        <form class="form-inline mt-2 mt-md-0" action="{{url_for('search')}}">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </nav>
-    </div>
-  </header>
+{% block content %}
 
   <main role="main" class="inner cover">
-    <h1 class="cover-heading">Bem vindos a SaraiVrau.</h1>
-    <p class="lead">Sua livraria on-line pronta para atender toda a sua demanda</p>
+    <h1 class="cover-heading">Cover your page.</h1>
+    <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
     <p class="lead">
       <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
     </p>
@@ -71,11 +22,4 @@
     <nav class="nav justify-content-center"> <a class="nav-link" href="search/?query=Livros">Livros</a> |  <a class="nav-link" href="search/?query=Eletrônicos">Eletrônicos</a>  |  <a class="nav-link" href="search/?query=Filmes">Filmes</a>  </nav>
   </div>
 
-  <footer class="mastfoot mt-auto">
-    <div class="inner">
-      <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-    </div>
-  </footer>
-</div>
-</body>
-</html>
+{% endblock %}

@@ -1,24 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'navbar_employee.html' %}
 
-    <form action="" method="POST">>
+
+{% block title %}Novo Empregado{% endblock %}
+
+{% block content %}
+    <form action="" method="POST" class="form-signin">
         {{ form.csrf_token}}
-        <label for="">Nome</label>
-        {{ form.name(placeholder="Digite seu Nome") }}
-        <label for="">Salario</label>
-        {{ form.salary(placeholder="0.0") }}
-        <label for="">Usuário</label>
-        {{ form.username(placeholder="Digite seu usuário") }}
-        <label for="">Senha</label>
-        {{ form.password(placeholder="Digite sua senha") }}
-        <label for="">Repita sua Senha</label>
-        <input type="password" name="repeat" placeholder="Repita sua Senha">
+        <label for="" class="sr-only" >Nome</label>
+        {{ form.name(placeholder="Digite seu Nome", class="form-control") }}
+        <label for="" class="sr-only" >Salario</label>
+        {{ form.salary(placeholder="Digite seu salário", class="form-control", type="number") }}
+        <label for="" class="sr-only">Usuário</label>
+        {{ form.username(placeholder="Digite seu usuário", class="form-control") }}
+        <label for="" class="sr-only">Senha</label>
+        {{ form.password(placeholder="Digite sua senha", class="form-control") }}
+        <label for="" class="sr-only">Repita sua Senha</label>
+        <input type="password" name="repeat" placeholder="Repita sua Senha" class="form-control">
         <input type="submit" value="Enviar">
     </form>
-</body>
-</html>
+{% endblock %}
