@@ -364,6 +364,7 @@ def carrinho_compras():
     array_of_cookies = []
     array_of_cookies_unfiltered = []
     result = []
+    full_price = 0
     for i in resp:
         if i != 'session':
             array_of_cookies_unfiltered.append(i)
@@ -373,5 +374,7 @@ def carrinho_compras():
         products_like = Product.query.filter(Product.name.like(f'%{i}%')).all()
         for item in products_like:
             result.append(item)
-    print(result)
-    return render_template('carrinho.html', cookies = array_of_cookies_unfiltered, products = result)
+    for k in array_of_cookies_unfiltered:
+        full_price = full_price + float(request.cookies.get(k))
+    
+    return render_template('carrinho.html', products = zip(result,array_of_cookies_unfiltered), full_price = full_price)
