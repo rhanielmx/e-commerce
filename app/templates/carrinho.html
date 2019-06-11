@@ -11,15 +11,26 @@
                 <td>Quantidade</td>
                 <td> Valor</td>
             </tr>
-            {% for product in products %}
+            {% for product,cookie in products %}
                     <tr>
                             <td id = "product-{{product.id}}" , align = 'Center' >{{product.name}}</td>
+                            <td></td>
+                            <td id = "price"> GetCookie({{cookie}}) </td>
+                            <td><button onClick = "onClickCarDel('{{product.name}}')"> Remover do Carrinho </button></td>
+
                     </tr>
                         
                          
-                {% endfor %}            
+                {% endfor %}
+                    
+        
         </table>
+        <span id = 'full_price'> O Valor total é R$ <b>{{full_price}}</b></span>
+        <br>
+        <br>
+        <a class="nav-link active" href="{{url_for('index')}}">Voltar para tela Principal</a>
     </body>
 
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src = './../static/js/script.js'></script>
 </html>
