@@ -11,6 +11,13 @@
                 <td>Quantidade</td>
                 <td> Valor</td>
             </tr>
+            {% for product in products %}
+                    <tr>
+                            <td id = "product-{{product.id}}" , align = 'Center' >{{product.name}}</td>
+                    </tr>
+                        
+                         
+                {% endfor %}            
         </table>
     </body>
 

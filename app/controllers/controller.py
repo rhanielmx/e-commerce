@@ -360,4 +360,18 @@ def search():
 
 @app.route('/carrinho', methods=['GET', 'POST'])
 def carrinho_compras():
-    return render_template('carrinho.html')
+    resp = request.cookies.keys()
+    array_of_cookies = []
+    array_of_cookies_unfiltered = []
+    result = []
+    for i in resp:
+        if i != 'session':
+            array_of_cookies_unfiltered.append(i)
+            i = i.replace('%20', ' ')
+            array_of_cookies.append(i)
+    for i in array_of_cookies:
+        products_like = Product.query.filter(Product.name.like(f'%{i}%')).all()
+        for item in products_like:
+            result.append(item)
+    print(result)
+    return render_template('carrinho.html', cookies = array_of_cookies_unfiltered, products = result)
