@@ -463,7 +463,7 @@ def finalizar_compra():
     price = 0.0
     for item in iterador:
         produtos = produtos + str(item['product']) + ' - (' + str(item['quantity']) + ' Unidade(s))  '
-        price = price + float(item['price'])
+        price = price + (float(item['price']) * float(item['quantity']))
     query = """INSERT INTO bags (price, products,user_id)
                 VALUES({0},'{1}',{2})
             """.format(price, produtos, user_id)
