@@ -377,11 +377,11 @@ def add_to_cart():
         product = request.form['product']
         category = request.form['category']
         price = request.form['price']
-
-
+        id = request.form['id[]']
 
         if resp is None:
             cart = [{
+                'id': id,
                 'product': product,
                 'category': category,
                 'price': price,
@@ -389,7 +389,7 @@ def add_to_cart():
             }]
 
             resp = json.dumps(cart)
-            response = make_response(render_template('carrinho.html'))
+            response = make_response(render_template('carrinho.html', products = cart, price=total_price))
             response.set_cookie('shopping-cart', resp, max_age=60*60*24*365*2)
             return response
         else:
@@ -402,27 +402,51 @@ def add_to_cart():
 
             if not exists:
                 new_item = {
+                    'id': id,
                     'product': product,
                     'category': category,
                     'price': price,
-                    'quantity': 1
+                    'quantity': 1,
                 }
+                print(new_item)
                 cart.append(new_item)
                 total_price += float(new_item['price'])
 
             resp = json.dumps(cart)
 
             response = make_response(render_template('carrinho.html', products = cart, price=total_price))
-            response.set_cookie('shopping-cart', resp, max_age=60 * 60 * 24 * 365 * 2)
+            response.set_cookie('shopping-cart', resp, max_age= 60 * 60 * 24 * 365 * 2)
             return response
 
     return render_template('carrinho.html', products=json.loads(resp), price=total_price)
 
-@app.route('/remove')
+@app.route('/remove', methods=['GET', 'POST'])
 def remove_from_cart():
-    resp = request.cookies.get('shopping-cart')
-    pass
 
+    resp = request.cookies.get('shopping-cart')
+
+    cart = json.loads(resp)
+    total_price = 0
+
+    if resp is not None:
+        for item in json.loads(resp):
+            total_price += float(item['price']) * int(item['quantity'])
+
+    if request.method == 'POST':
+        id = request.form['id[]']
+
+        for item in cart:
+            if item['id'] == id and item['quantity'] > 0:
+                item['quantity'] -= 1
+                total_price -= float(item['price'])
+
+        resp = json.dumps(cart)
+
+        response = make_response(render_template('carrinho.html', products=cart, price=total_price))
+        response.set_cookie('shopping-cart', resp, max_age=60 * 60 * 24 * 365 * 2)
+        return response
+
+    return render_template('carrinho.html', products=cart, price=total_price)
 
 @app.route('/get_cookies', methods=['GET', 'POST'])
 def get_cookies():
