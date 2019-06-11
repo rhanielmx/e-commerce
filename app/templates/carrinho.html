@@ -43,15 +43,22 @@
                    type: "POST",
                    data: {id:_id}
                   }).done(function(data) {
-                      var float_price = parseFloat($('#price'+_id).text());
-                      var old_total = parseFloat($('#b_price').text())
-
-                      var new_total = old_total - float_price
-
-                      $('#b_price').text(new_total+'.0 ').show()
-
                       var quantity = parseInt($('#quantity'+_id).text());
-                      $('#quantity'+_id).text(quantity -1).show()
+
+                      if(quantity > 0){
+                          $('#quantity'+_id).text(quantity -1).show()
+                          var float_price = parseFloat($('#price'+_id).text());
+                          var old_total = parseFloat($('#b_price').text())
+
+                          var new_total = old_total - float_price
+
+                          $('#b_price').text(new_total+'.0 ').show()
+                      } else {
+                          alert('Não é possível remover mais o item!')
+                      }
+
+
+
                   });
 
              });
