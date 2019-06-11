@@ -11,18 +11,31 @@
         $(document).ready(function() {
          $('form').on('submit', function(event) {
              $('.products-list').unbind('click');
-             $('.products-list').on('click', '.select_product', function(){
+             $('.products-list').on('click', '.add_product', function(){
                  var _id = this.id.match('\\d+');
                  var product = $('#product'+_id).text();
                  var category = $('#category'+_id).text();
                  var price = $('#price'+_id).text();
                  $.ajax({
-                   url: "{{url_for('carrinho_compras')}}",
+                   url: "{{url_for('add_to_cart')}}",
                      async: 'True',
                    type: "POST",
                    data: {product: product, category: category, price: price, id:_id}
                   }).done(function(data) {
-                      console.log(product)
+                      console.log('add')
+                  });
+                  event.preventDefault();
+
+             });
+             $('.products-list').on('click', '.remove_product', function(){
+                 var _id = this.id.match('\\d+');
+                 $.ajax({
+                   url: "{{url_for('remove_from_cart')}}",
+                     async: 'True',
+                   type: "POST",
+                   data: {id:_id}
+                  }).done(function(data) {
+                      console.log('remove')
                   });
                   event.preventDefault();
 
@@ -32,6 +45,7 @@
     });
 
     </script>
+
     <h1>Resultado de sua busca</h1>
     {% if products %}
         <form action="" method="POST">
@@ -48,9 +62,10 @@
                             <td id = "category{{product.id}}", align = 'Center' >{{product.category}}</td>
                             <td id = "price{{product.id}}", align = 'Center' >{{product.price}}</td>
                             <td align = 'Center' >
-                            <input id="product" name="product" type="hidden" value="{{product}}">
-                            <button id = "button{{product.id}}", class="select_product" type="submit"> Enviar </button>
-                        </td>
+                                <input id="product" name="product" type="hidden" value="{{product}}">
+                                <button id = "add_button{{product.id}}", class="add_product" type="submit"> + </button>
+                                <button id = "remove_button{{product.id}}", class="remove_product" type="submit"> - </button>
+                            </td>
                     </tr>
 
                 {% endfor %}

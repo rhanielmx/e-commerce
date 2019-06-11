@@ -3,30 +3,94 @@
     <head>
         <title>Seu Carrinho</title>
     </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <body>
+
+    <script>
+        $(document).ready(function() {
+         $('form').on('submit', function(event) {
+             $('.cart').unbind('click');
+             $('.cart').on('click', '.add_product', function(){
+                 var _id = this.id.match('\\d+');
+                 var product = $('#product'+_id).text();
+                 var category = $('#category'+_id).text();
+                 var price = $('#price'+_id).text();
+                 $.ajax({
+                   url: "{{url_for('add_to_cart')}}",
+                     async: 'True',
+                   type: "POST",
+                   data: {product: product, category: category, price: price, id:_id}
+                  }).done(function(data) {
+                      var float_price = parseFloat(price)
+                      var old_total = parseFloat($('#b_price').text())
+
+                      var new_total = old_total + float_price
+
+                      $('#b_price').text(new_total+'.0').show()
+
+                      var quantity = parseInt($('#quantity'+_id).text());
+                      $('#quantity'+_id).text(quantity + 1).show()
+                  });
+                  event.preventDefault();
+
+             });
+             $('.cart').on('click', '.remove_product', function(){
+                 var _id = this.id.match('\\d+');
+                 $.ajax({
+                   url: "{{url_for('remove_from_cart')}}",
+                     async: 'True',
+                   type: "POST",
+                   data: {id:_id}
+                  }).done(function(data) {
+                      var float_price = parseFloat($('#price'+_id).text());
+                      var old_total = parseFloat($('#b_price').text())
+
+                      var new_total = old_total - float_price
+
+                      $('#b_price').text(new_total+'.0 ').show()
+
+                      var quantity = parseInt($('#quantity'+_id).text());
+                      $('#quantity'+_id).text(quantity -1).show()
+                  });
+
+             });
+            event.preventDefault();
+          });
+    });
+
+    </script>
+
+
         <h1>Bem vindo ao seu carrinho</h1>
-        <table border = "1">
-            <tr> 
-                <td>Nome do Produto</td>
-                <td>Quantidade</td>
-                <td> Valor</td>
-            </tr>
-            {% if products %}
-            {% for product in products %}
-            <tr>
-                    <td id = "product" , align = 'Center' >{{product.product }}</td>
-                    <td id = "quantity" , align = 'Center' >{{product.quantity }}</td>
-                    <td id = "price"> {{ product.price }} </td>
-                    <td><button"> Remover do Carrinho </button></td>
-            </tr>
+        <form action="">
+            <table border = "1" class="cart">
+                <tr>
+                    <td>Nome do Produto</td>
+                    <td>Quantidade</td>
+                    <td> Valor</td>
+                </tr>
+                {% if products %}
+                {% for product in products %}
+                <tr>
+                        <td id = "product{{product.id}}" , align = 'Center' >{{product.product }}</td>
+                        <td id = "quantity{{product.id}}" , align = 'Center' >{{product.quantity }}</td>
+                        <td id = "price{{product.id}}"> {{ product.price }} </td>
+                        <td align = 'Center' >
+                            <input id="product" name="product" type="hidden" value="{{product}}">
+                            <button id = "add_button{{product.id}}", class="add_product" type="submit"> + </button>
+                            <button id = "remove_button{{product.id}}", class="remove_product" type="submit"> - </button>
+                        </td>
+                </tr>
 
 
 
-                {% endfor %}
-            {% endif %}
-        
-        </table>
-        <span id = 'price'> O Valor total é R$ <b>{{price}}</b></span>
+                    {% endfor %}
+                {% endif %}
+
+            </table>
+        </form>
+        <span id = 'total_price'> O Valor total é R$ <b id="b_price">{{price}}</b></span>
         <br>
         <br>
         <a class="nav-link active" href="{{url_for('index')}}">Voltar para tela Principal</a>
