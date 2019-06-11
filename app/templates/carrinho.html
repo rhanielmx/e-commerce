@@ -11,21 +11,22 @@
                 <td>Quantidade</td>
                 <td> Valor</td>
             </tr>
-            {% for product,cookie in products %}
-                    <tr>
-                            <td id = "product-{{product.id}}" , align = 'Center' >{{product.name}}</td>
-                            <td></td>
-                            <td id = "price"> GetCookie({{cookie}}) </td>
-                            <td><button onClick = "onClickCarDel('{{product.name}}')"> Remover do Carrinho </button></td>
+            {% if products %}
+            {% for product in products %}
+            <tr>
+                    <td id = "product" , align = 'Center' >{{product.product }}</td>
+                    <td id = "quantity" , align = 'Center' >{{product.quantity }}</td>
+                    <td id = "price"> {{ product.price }} </td>
+                    <td><button"> Remover do Carrinho </button></td>
+            </tr>
 
-                    </tr>
-                        
-                         
+
+
                 {% endfor %}
-                    
+            {% endif %}
         
         </table>
-        <span id = 'full_price'> O Valor total é R$ <b>{{full_price}}</b></span>
+        <span id = 'price'> O Valor total é R$ <b>{{price}}</b></span>
         <br>
         <br>
         <a class="nav-link active" href="{{url_for('index')}}">Voltar para tela Principal</a>

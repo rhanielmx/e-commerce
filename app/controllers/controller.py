@@ -2,10 +2,12 @@ from app import app, db, login_manager
 from app.models.forms import ClientForm, EmployeeForm, ProductForm, CategoryForm, LoginForm
 from app.models.tables import User, Client, Employee, Category, Product
 
-from flask import render_template, redirect, url_for, request, abort, session
+from flask import render_template, redirect, url_for, request, abort, session, make_response
 from flask_login import login_user, logout_user, current_user, user_logged_in, user_logged_out, login_fresh
 
 from functools import wraps
+
+import json
 
 @login_manager.user_loader
 def load_user(id):
@@ -359,7 +361,76 @@ def search():
     return render_template('search.html', products=results)
 
 @app.route('/carrinho', methods=['GET', 'POST'])
-def carrinho_compras():
+def add_to_cart():
+
+    exists = False
+
+    resp = request.cookies.get('shopping-cart')
+
+    total_price = 0
+    for item in json.loads(resp):
+        total_price += float(item['price']) * int(item['quantity'])
+
+    if request.method=='POST':
+        product = request.form['product']
+        category = request.form['category']
+        price = request.form['price']
+
+
+
+        if resp is None:
+            cart = [{
+                'product': product,
+                'category': category,
+                'price': price,
+                'quantity': 1
+            }]
+
+            resp = json.dumps(cart)
+            response = make_response(render_template('carrinho.html'))
+            response.set_cookie('shopping-cart', resp, max_age=60*60*24*365*2)
+            return response
+        else:
+            cart = json.loads(resp)
+            for item in cart:
+                if item['product'] == product:
+                    item['quantity'] += 1
+                    total_price += float(item['price'])
+                    exists = True
+
+            if not exists:
+                new_item = {
+                    'product': product,
+                    'category': category,
+                    'price': price,
+                    'quantity': 1
+                }
+                cart.append(new_item)
+                total_price += float(new_item['price'])
+
+            resp = json.dumps(cart)
+
+            response = make_response(render_template('carrinho.html', products = cart, price=total_price))
+            response.set_cookie('shopping-cart', resp, max_age=60 * 60 * 24 * 365 * 2)
+            return response
+
+    return render_template('carrinho.html', products=json.loads(resp), price=total_price)
+
+@app.route('/remove')
+def remove_from_cart():
+    resp = request.cookies.get('shopping-cart')
+    pass
+
+
+@app.route('/get_cookies', methods=['GET', 'POST'])
+def get_cookies():
+    resp = request.cookies.get('shopping-cart')
+    print(resp)
+    return resp or 'oi'
+
+
+
+def a():
     resp = request.cookies.keys()
     array_of_cookies = []
     array_of_cookies_unfiltered = []
@@ -370,11 +441,15 @@ def carrinho_compras():
             array_of_cookies_unfiltered.append(i)
             i = i.replace('%20', ' ')
             array_of_cookies.append(i)
+    print(resp)
+    print(array_of_cookies)
+    print(array_of_cookies_unfiltered)
+    """
     for i in array_of_cookies:
         products_like = Product.query.filter(Product.name.like(f'%{i}%')).all()
         for item in products_like:
             result.append(item)
     for k in array_of_cookies_unfiltered:
         full_price = full_price + float(request.cookies.get(k))
-    
-    return render_template('carrinho.html', products = zip(result,array_of_cookies_unfiltered), full_price = full_price)
+    """
+    return render_template('carrinho.html')#, products = zip(result,array_of_cookies_unfiltered), full_price = full_price)

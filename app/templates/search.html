@@ -4,10 +4,38 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <body>
+    <script>
+        $(document).ready(function() {
+         $('form').on('submit', function(event) {
+             $('.products-list').unbind('click');
+             $('.products-list').on('click', '.select_product', function(){
+                 var _id = this.id.match('\\d+');
+                 var product = $('#product'+_id).text();
+                 var category = $('#category'+_id).text();
+                 var price = $('#price'+_id).text();
+                 $.ajax({
+                   url: "{{url_for('carrinho_compras')}}",
+                     async: 'True',
+                   type: "POST",
+                   data: {product: product, category: category, price: price, id:_id}
+                  }).done(function(data) {
+                      console.log(product)
+                  });
+                  event.preventDefault();
+
+             });
+            event.preventDefault();
+          });
+    });
+
+    </script>
     <h1>Resultado de sua busca</h1>
     {% if products %}
-        <table border = "1"'>
+        <form action="" method="POST">
+        <table border = "1" class="products-list">
             <tr>
                 <td> Nome do Produto </td>
                 <td> Categoria do Produto </td>
@@ -15,22 +43,28 @@
                 <td></td>
             </tr>
                 {% for product in products %}
-                    <tr>
-                            <td id = "product-{{product.id}}" , align = 'Center' >{{product.name}}</td>
-                            <td id = "category-{{product.id}}", align = 'Center' >{{product.category}}</td>
-                            <td id = "price-{{product.id}}" , align = 'Center' >{{product.price}}</td> 
-                            <td align = 'Center' ><button onClick="onClickCar('product-{{product.id}}', 'price-{{product.id}}')"> Por no Carrinho </button></td>
+                    <tr >
+                            <td id = "product{{product.id}}" , align = 'Center' >{{product.name}}</td>
+                            <td id = "category{{product.id}}", align = 'Center' >{{product.category}}</td>
+                            <td id = "price{{product.id}}", align = 'Center' >{{product.price}}</td>
+                            <td align = 'Center' >
+                            <input id="product" name="product" type="hidden" value="{{product}}">
+                            <button id = "button{{product.id}}", class="select_product" type="submit"> Enviar </button>
+                        </td>
                     </tr>
-                        
-                         
-                {% endfor %}            
+
+                {% endfor %}
         </table>
+        </form>
     {% else %}
         <p> Não existe produtos com esse nome</p>
     {% endif %}
-    <a class="nav-link" href="{{url_for('carrinho_compras')}}"> Ir para o carrinho</a>
+
+    <div id="output"></div>
+
+    <a class="nav-link" href="{{url_for('add_to_cart')}}"> Ir para o carrinho</a>
 </body>
- 
+
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src = './../static/js/script.js'></script>
 </html>
